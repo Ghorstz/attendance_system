@@ -1,0 +1,11 @@
+# Local environment configs
+.env
+*.log
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
