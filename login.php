@@ -17,19 +17,22 @@ include __DIR__ . '/views/header.php';
                 <h3 class="card-title text-center mb-4 fw-bold">Sign In</h3>
                 <form action="actions/login_action.php" method="POST">
                     <input type="hidden" name="csrf_token" value="<?= generateCSRFToken(); ?>">
+                    
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
                         <input type="email" name="email" id="email" class="form-control" required placeholder="admin@example.com">
                     </div>
+                    
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" name="password" id="password" class="form-control" required placeholder="••••••••">
+                            <input type="password" name="password" id="password" class="form-control" required>
                             <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
                         </div>
                     </div>
+                    
                     <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Login</button>
                 </form>
                 <div class="text-center mt-3">
