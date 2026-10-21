@@ -1,7 +1,19 @@
 # 📋 Attendance & Access Logging System
 
+![PHP Version](https://img.shields.io/badge/PHP-8.x-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
 A lightweight, secure, and production-ready web application built with **PHP (PDO)**, **MySQL**, and **Bootstrap 5**. Designed for classrooms, offices, and event monitoring, this system provides role-based access for students and administrators, automated check-in/check-out tracking with grace-period schedule enforcement, dynamic status updates, and one-click CSV reporting.
 
+---
+
+## 📸 Screenshots
+
+| User Dashboard | Admin Analytics |
+| :---: | :---: |
+| ![User Dashboard](assets/images/user_dashboard.png) | ![Admin Dashboard](assets/images/admin_dashboard.png) |
 ---
 
 ## 🌟 Key Features
