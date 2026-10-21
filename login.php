@@ -16,6 +16,7 @@ include __DIR__ . '/views/header.php';
             <div class="card-body p-4">
                 <h3 class="card-title text-center mb-4 fw-bold">Sign In</h3>
                 <form action="actions/login_action.php" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= generateCSRFToken(); ?>">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
                         <input type="email" name="email" id="email" class="form-control" required placeholder="admin@example.com">

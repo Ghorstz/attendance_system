@@ -3,8 +3,14 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../config/auth.php';
 
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: ../register.php");
+    exit();
+}
+if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+    $_SESSION['flash_error'] = "Security check failed: Invalid CSRF token. Please refresh and try again.";
+    header("Location: ../login.php");
     exit();
 }
 

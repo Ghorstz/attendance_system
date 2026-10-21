@@ -16,6 +16,7 @@ include __DIR__ . '/views/header.php';
             <div class="card-body p-4">
                 <h3 class="card-title text-center mb-4 fw-bold">Create Account</h3>
                 <form action="actions/register_action.php" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= generateCSRFToken(); ?>">
                     <div class="mb-3">
                         <label for="user_code" class="form-label">Student ID / User Code</label>
                         <input type="text" name="user_code" id="user_code" class="form-control" required placeholder="e.g. STU-201">
@@ -56,5 +57,6 @@ include __DIR__ . '/views/header.php';
         </div>
     </div>
 </div>
+<input type="hidden" name="csrf_token" value="<?= generateCSRFToken(); ?>">
 
 <?php include __DIR__ . '/views/footer.php'; ?>

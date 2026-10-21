@@ -67,11 +67,13 @@ include __DIR__ . '/views/header.php';
                 <div class="d-grid gap-2">
                     <?php if (!$todayLog): ?>
                         <form action="actions/checkin_action.php" method="POST">
+                            <input type="hidden" name="csrf_token" value="<?= generateCSRFToken(); ?>">
                             <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
                                 <i class="fa-solid fa-right-to-bracket me-2"></i> Check In Now
                             </button>
                         </form>
                     <?php elseif ($todayLog['check_out_time'] === null): ?>
+                        <input type="hidden" name="csrf_token" value="<?= generateCSRFToken(); ?>">
                         <form action="actions/checkout_action.php" method="POST">
                             <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold text-white">
                                 <i class="fa-solid fa-right-from-bracket me-2"></i> Check Out Now

@@ -10,6 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+    $_SESSION['flash_error'] = "Security check failed: Invalid CSRF token. Please refresh and try again.";
+    header("Location: ../login.php");
+    exit();
+}
+
 $userId = $_SESSION['user_id'];
 $today = date('Y-m-d');
 $now = date('Y-m-d H:i:s');
