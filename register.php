@@ -30,7 +30,21 @@ include __DIR__ . '/views/header.php';
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" id="password" class="form-control" minlength="6" required placeholder="••••••••">
+                        <div class="input-group">
+                            <input type="password" name="password" id="password" class="form-control" minlength="6" required placeholder="••••••••">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="password">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" name="confirm_password" id="confirm_password" class="form-control" minlength="6" required placeholder="••••••••">
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="confirm_password">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">Register</button>
                 </form>
