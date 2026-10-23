@@ -16,24 +16,53 @@ $todayLate = 0;
 $logs = [];
 $schedules = [];
 
+// admin_dashboard.php (Top PHP Section)
+
+// Filter parameters
+$startDate = $_GET['start_date'] ?? date('Y-m-01');
+$endDate = $_GET['end_date'] ?? date('Y-m-d');
+$search = sanitize($_GET['search'] ?? '');
+
+// Pagination settings
+$page = max(1, (int)($_GET['page'] ?? 1));
+$limit = 10; // Number of records per page
+$offset = ($page - 1) * $limit;
+
 try {
     $pdo = getDBConnection();
 
-    // 1. Stat Cards Queries
-    $totalUsersStmt = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'user'");
-    $totalUsers = $totalUsersStmt->fetchColumn();
+    // 1. Get total record count for pagination calculation
+    $countSql = "
+        SELECT COUNT(*) 
+        FROM attendance_logs l
+        JOIN users u ON l.user_id = u.id
+        WHERE l.date_logged BETWEEN :start_date AND :end_date
+    ";
+    $countParams = [
+        ':start_date' => $startDate,
+        ':end_date'   => $endDate
+    ];
 
-    $todayPresentStmt = $pdo->prepare("SELECT COUNT(*) FROM attendance_logs WHERE date_logged = :today");
-    $todayPresentStmt->execute([':today' => $today]);
-    $todayPresent = $todayPresentStmt->fetchColumn();
+    if (!empty($search)) {
+        $countSql .= " AND (u.name LIKE :search OR u.user_code LIKE :search)";
+        $countParams[':search'] = "%{$search}%";
+    }
 
-    $todayLateStmt = $pdo->prepare("SELECT COUNT(*) FROM attendance_logs WHERE date_logged = :today AND status = 'Late'");
-    $todayLateStmt->execute([':today' => $today]);
-    $todayLate = $todayLateStmt->fetchColumn();
+    $countStmt = $pdo->prepare($countSql);
+    $countStmt->execute($countParams);
+    $totalRecords = (int)$countStmt->fetchColumn();
+    $totalPages = max(1, ceil($totalRecords / $limit));
 
-    // 2. Attendance Logs Query with Filtering
+    // 2. Fetch paginated records using LIMIT and OFFSET
     $sql = "
-        SELECT l.*, u.name as user_name, u.user_code, u.email, s.title as schedule_title
+        SELECT 
+            u.user_code,
+            u.name as user_name,
+            l.date_logged,
+            l.check_in_time,
+            l.check_out_time,
+            s.title as schedule_title,
+            l.status
         FROM attendance_logs l
         JOIN users u ON l.user_id = u.id
         LEFT JOIN schedules s ON l.schedule_id = s.id
@@ -50,18 +79,25 @@ try {
         $params[':search'] = "%{$search}%";
     }
 
-    $sql .= " ORDER BY l.check_in_time DESC";
+    $sql .= " ORDER BY l.check_in_time DESC LIMIT :limit OFFSET :offset";
 
-    $logStmt = $pdo->prepare($sql);
-    $logStmt->execute($params);
-    $logs = $logStmt->fetchAll();
-
-    // 3. Active Schedules Query
-    $schedStmt = $pdo->query("SELECT * FROM schedules ORDER BY id ASC");
-    $schedules = $schedStmt->fetchAll();
+    $stmt = $pdo->prepare($sql);
+    
+    // Bind integer parameters explicitly for LIMIT/OFFSET
+    foreach ($params as $key => $val) {
+        $stmt->bindValue($key, $val);
+    }
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    
+    $stmt->execute();
+    $logs = $stmt->fetchAll();
 
 } catch (Exception $e) {
-    error_log("Admin Dashboard Error: " . $e->getMessage());
+    error_log("Pagination Error: " . $e->getMessage());
+    $logs = [];
+    $totalRecords = 0;
+    $totalPages = 1;
 }
 
 include __DIR__ . '/views/header.php';
@@ -177,6 +213,35 @@ include __DIR__ . '/views/header.php';
                     <?php endif; ?>
                 </tbody>
             </table>
+            <!-- Pagination Controls -->
+            <?php if ($totalPages > 1): ?>
+            <nav aria-label="Logs navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <!-- Previous Page Link -->
+                    <li class="page-item <?= ($page <= 1) ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?start_date=<?= urlencode($startDate); ?>&end_date=<?= urlencode($endDate); ?>&search=<?= urlencode($search); ?>&page=<?= $page - 1; ?>">
+                            <i class="fa-solid fa-chevron-left me-1"></i> Previous
+                        </a>
+                    </li>
+
+                    <!-- Numeric Page Numbers -->
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= ($i === $page) ? 'active' : ''; ?>">
+                            <a class="page-link" href="?start_date=<?= urlencode($startDate); ?>&end_date=<?= urlencode($endDate); ?>&search=<?= urlencode($search); ?>&page=<?= $i; ?>">
+                                <?= $i; ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Next Page Link -->
+                    <li class="page-item <?= ($page >= $totalPages) ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?start_date=<?= urlencode($startDate); ?>&end_date=<?= urlencode($endDate); ?>&search=<?= urlencode($search); ?>&page=<?= $page + 1; ?>">
+                            Next <i class="fa-solid fa-chevron-right ms-1"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <?php endif; ?>
         </div>
     </div>
 </div>
