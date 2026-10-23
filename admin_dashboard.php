@@ -124,6 +124,9 @@ include __DIR__ . '/views/header.php';
                 <button type="submit" class="btn btn-primary flex-grow-1"><i class="fa-solid fa-filter me-1"></i> Filter</button>
                 <a href="admin_dashboard.php" class="btn btn-outline-secondary"><i class="fa-solid fa-rotate-left"></i></a>
                 <a href="export/export_csv.php?start_date=<?= urlencode($startDate); ?>&end_date=<?= urlencode($endDate); ?>&search=<?= urlencode($search); ?>" class="btn btn-success"><i class="fa-solid fa-file-csv me-1"></i> Export</a>
+                <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <i class="fa-solid fa-user-plus me-1"></i> Add User
+                </button>
             </div>
         </form>
     </div>
@@ -174,6 +177,59 @@ include __DIR__ . '/views/header.php';
                     <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold" id="addUserModalLabel"><i class="fa-solid fa-user-plus me-2"></i>Add New User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="actions/add_user_action.php" method="POST">
+                <div class="modal-body p-4">
+                    <input type="hidden" name="csrf_token" value="<?= generateCSRFToken(); ?>">
+
+                    <div class="mb-3">
+                        <label for="modal_user_code" class="form-label font-weight-bold">User Code / ID</label>
+                        <input type="text" name="user_code" id="modal_user_code" class="form-control" placeholder="e.g., 23-00775" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="modal_name" class="form-label">Full Name</label>
+                        <input type="text" name="name" id="modal_name" class="form-control" placeholder="e.g., Jane Doe" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="modal_email" class="form-label">Email Address</label>
+                        <input type="email" name="email" id="modal_email" class="form-control" placeholder="jane@example.com" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="modal_password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" name="password" id="modal_password" class="form-control" placeholder="••••••••" minlength="6" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" data-target="modal_password">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="modal_role" class="form-label">Account Role</label>
+                        <select name="role" id="modal_role" class="form-select">
+                            <option value="user" selected>User (Student)</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">Create Account</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
