@@ -163,6 +163,10 @@ include __DIR__ . '/views/header.php';
                 <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#addUserModal">
                     <i class="fa-solid fa-user-plus me-1"></i> Add User
                 </button>
+                <!-- Print Report Button -->
+                <button type="button" class="btn btn-outline-dark ms-2" onclick="window.print()">
+                    <i class="fa-solid fa-print me-1"></i> Print Report
+                </button>
             </div>
         </form>
     </div>

@@ -1,0 +1,60 @@
+/* assets/css/style.css - Print & PDF Report Styles */
+
+@media print {
+    /* Hide navigation bars, action buttons, filter forms, and footer */
+    .navbar,
+    .btn,
+    form,
+    .alert,
+    .modal,
+    footer,
+    .pagination {
+        display: none !important;
+    }
+
+    /* Reset background colors and page borders for crisp printing */
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 12pt;
+    }
+
+    .container, .container-fluid {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure tables expand fully across paper margins */
+    .table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    .table th, .table td {
+        border: 1px solid #dee2e6 !important;
+        padding: 8px !important;
+    }
+
+    /* Style badge headers nicely for printed paper */
+    .badge {
+        border: 1px solid #000 !important;
+        color: #000 !important;
+        background: transparent !important;
+    }
+
+    /* Add print title header */
+    body::before {
+        content: "Attendance & Access Logging System - Official Activity Report";
+        display: block;
+        text-align: center;
+        font-size: 16pt;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+}
