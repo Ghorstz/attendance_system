@@ -43,6 +43,9 @@ if (session_status() === PHP_SESSION_NONE) {
           <li class="nav-item">
             <a class="nav-link" href="login.php">Login</a>
           </li>
+          <button class="btn btn-outline-light btn-sm me-2" id="themeToggleBtn" type="button" title="Toggle Theme">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+          </button>
           <li class="nav-item">
             <a class="btn btn-success btn-sm ms-2" href="register.php">Register</a>
           </li>

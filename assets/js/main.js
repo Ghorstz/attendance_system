@@ -29,3 +29,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+// assets/js/main.js - Theme Switcher Logic
+
+document.addEventListener('DOMContentLoaded', () => {
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    // Apply saved theme on page load
+    document.documentElement.setAttribute('data-bs-theme', currentTheme);
+    updateThemeIcon(currentTheme);
+
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const activeTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    }
+
+    function updateThemeIcon(theme) {
+        if (!themeIcon) return;
+        if (theme === 'dark') {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+    }
+});

@@ -1,4 +1,29 @@
-/* assets/css/style.css - Print & PDF Report Styles */
+/* assets/css/style.css - Dynamic Theme Support */
+
+:root {
+    --bg-body: #f8f9fa;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+}
+
+[data-bs-theme="dark"] {
+    --bg-body: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --border-color: #333333;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
 
 @media print {
     /* Hide navigation bars, action buttons, filter forms, and footer */
