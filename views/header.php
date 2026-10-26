@@ -4,6 +4,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
+<?php if (isLoggedIn()): ?>
+    <li class="nav-item me-2">
+        <a class="nav-link text-white d-flex align-items-center" href="profile.php">
+            <i class="fa-solid fa-user-circle me-1"></i> Profile
+        </a>
+    </li>
+<?php endif; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
